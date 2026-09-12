@@ -47,6 +47,15 @@
 
   @media (max-width: 700px) { .grid { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 420px) { .grid { grid-template-columns: 1fr; } }
+
+  /* WGER card extras */
+  .wger-weight { font-size: 13px; color: #6a9eb8; font-weight: 500; padding-left: 17px; margin-top: 4px; }
+  .wger-bar-wrap { margin-top: 8px; padding-left: 17px; padding-right: 4px; }
+  .wger-bar-track { height: 3px; background: #1a2a30; border-radius: 2px; overflow: hidden; }
+  .wger-bar-fill { height: 100%; background: #2a8a50; border-radius: 2px; width: 0%; transition: width 0.6s ease; }
+  .wger-bar-fill.warn { background: #8a6a2a; }
+  .wger-bar-fill.over { background: #8a2a2a; }
+  .wger-kcal { font-size: 10px; color: #2a5060; margin-top: 3px; }
 </style>
 </head>
 <body>
@@ -105,9 +114,15 @@
         <div class="cport">:3005</div>
         <span class="arr">→</span>
       </a>
-      <a class="card internal" href="#" data-path=":8095/en/dashboard" target="_blank">
+      <a class="card internal" href="#" data-path=":8095/en/dashboard" target="_blank" id="wger-card">
         <div class="cname"><span class="dot on"></span>WGER</div>
-        <div class="cport">:8095</div>
+        <div class="wger-weight" id="wger-weight">— kg</div>
+        <div class="wger-bar-wrap">
+          <div class="wger-bar-track">
+            <div class="wger-bar-fill" id="wger-bar"></div>
+          </div>
+          <div class="wger-kcal" id="wger-kcal">— / 2000 kcal</div>
+        </div>
         <span class="arr">→</span>
       </a>
       <a class="card ext-style external" href="http://app.strava.com/dashboard" target="_blank">
@@ -180,8 +195,10 @@
 <script>
   const LOCAL_IP  = '192.168.68.50';
   const REMOTE_IP = '100.95.85.56';
+  let currentIP = LOCAL_IP;
 
   function applyIP(ip) {
+    currentIP = ip;
     document.querySelectorAll('a[data-path]').forEach(el => {
       const path = el.getAttribute('data-path');
       el.href = 'http://' + ip + path;
@@ -205,14 +222,52 @@
     }
   }
 
+  async function loadWger(ip) {
+    try {
+      const base = 'http://' + ip + ':8095';
+
+      // Weight
+      const wRes = await fetch(base + '/api/v2/weightentry/?format=json&limit=1&ordering=-date', { credentials: 'include' });
+      if (wRes.ok) {
+        const wData = await wRes.json();
+        if (wData.results && wData.results.length > 0) {
+          const kg = parseFloat(wData.results[0].weight).toFixed(1);
+          document.getElementById('wger-weight').textContent = kg + ' kg';
+        }
+      }
+
+      // Calories today
+      const today = new Date().toISOString().split('T')[0];
+      const cRes = await fetch(base + '/api/v2/nutritiondiary/?format=json&limit=100', { credentials: 'include' });
+      if (cRes.ok) {
+        const cData = await cRes.json();
+        const todayEntries = cData.results.filter(e => e.datetime && e.datetime.startsWith(today));
+        const totalKcal = todayEntries.reduce((sum, e) => sum + (parseFloat(e.energy) || 0), 0);
+        const goal = 2000;
+        const pct = Math.min((totalKcal / goal) * 100, 100);
+        const bar = document.getElementById('wger-bar');
+        bar.style.width = pct + '%';
+        if (pct >= 100) bar.className = 'wger-bar-fill over';
+        else if (pct >= 85) bar.className = 'wger-bar-fill warn';
+        document.getElementById('wger-kcal').textContent = Math.round(totalKcal) + ' / ' + goal + ' kcal';
+      }
+    } catch(e) {
+      // silently fail — WGER not reachable
+    }
+  }
+
   function tick() {
     const now = new Date();
     document.getElementById('clock').textContent = now.toLocaleTimeString('nl-NL', {hour:'2-digit', minute:'2-digit', second:'2-digit'});
   }
 
-  detectMode();
-  tick();
-  setInterval(tick, 1000);
+  async function init() {
+    const ip = await detectMode();
+    tick();
+    setInterval(tick, 1000);
+    loadWger(currentIP);
+  }
+  init();
 </script>
 </body>
 </html>
