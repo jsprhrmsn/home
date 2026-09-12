@@ -11,15 +11,13 @@
   .wrap { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem 3rem; }
 
   .header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 1.5rem; padding-bottom: 1.25rem; border-bottom: 1px solid #1e2a32; }
-  .hostname { font-size: 11px; color: #3a8a6e; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 4px; }
   .nas-title { font-size: 22px; font-weight: 600; color: #e8f0f4; letter-spacing: -0.02em; }
-  .nas-subtitle { font-size: 11px; color: #4a6070; margin-top: 4px; font-weight: 300; }
-  .header-right { text-align: right; font-size: 11px; color: #3a5060; line-height: 1.9; }
-  .clock { font-size: 14px; color: #6a9eb8; font-weight: 500; margin-bottom: 2px; }
-
-  .sysbar { background: #0d1318; border: 1px solid #1a2530; border-radius: 4px; padding: 9px 14px; display: flex; flex-wrap: wrap; gap: 1.5rem; font-size: 11px; margin-bottom: 2rem; }
-  .si .lbl { color: #2a3a44; margin-right: 4px; }
-  .si .val { color: #4a8a70; font-weight: 500; }
+  .header-right { display: flex; align-items: center; gap: 14px; }
+  .clock { font-size: 14px; color: #6a9eb8; font-weight: 500; }
+  .mode-badge { font-size: 10px; padding: 2px 8px; border-radius: 3px; transition: all 0.3s; }
+  .mode-badge.local  { background: #1a3a28; color: #3a8a6e; border: 1px solid #2a5a38; }
+  .mode-badge.remote { background: #1a2a40; color: #4a7ab8; border: 1px solid #2a4a78; }
+  .mode-badge.detecting { background: #1a2a1a; color: #3a5040; border: 1px solid #2a3a28; }
 
   .section { margin-bottom: 1.75rem; }
   .section-label { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #3a5060; margin-bottom: 0.6rem; display: flex; align-items: center; gap: 8px; }
@@ -42,12 +40,8 @@
   .card.hi { border-color: #1e3040; background: #0e1a22; }
   .card.hi:hover { border-color: #2a5a78; }
   .card.ext-style:hover .cname { color: #6ab8e0; }
-
-  /* internal = subtle green border */
   .card.internal { border-color: #1a3a28; }
   .card.internal:hover { border-color: #2a6a48; }
-
-  /* external = subtle blue border */
   .card.external { border-color: #1a2a40; }
   .card.external:hover { border-color: #2a4a78; }
 
@@ -63,11 +57,10 @@
       <div class="nas-title">UGREEN NAS | jsprhrmsn</div>
     </div>
     <div class="header-right">
+      <span class="mode-badge detecting" id="mode-badge">detecting...</span>
       <div class="clock" id="clock">--:--:--</div>
     </div>
   </div>
-
-
 
   <!-- PERSONAL -->
   <div class="section">
@@ -91,15 +84,30 @@
   <!-- CYCLING -->
   <div class="section">
     <div class="section-label">cycling</div>
-    <div class="grid" style="grid-template-columns: repeat(4, 1fr);">
-      <a class="card hi internal" href="http://192.168.68.50:3005" target="_blank">
-        <div class="cname"><span class="dot on"></span>Cycling Dashboard</div>
+    <div class="grid">
+      <a class="card hi internal" href="#" data-path=":8001/" target="_blank">
+        <div class="cname"><span class="dot on"></span>Ride entry</div>
+        <div class="cport">:8001</div>
+        <span class="arr">→</span>
+      </a>
+      <a class="card internal" href="#" data-path=":3005/d/addnwzm/22b4715?orgId=1&from=2011-10-29T22:00:00.000Z&to=2026-02-12T23:00:00.000Z&timezone=browser" target="_blank">
+        <div class="cname"><span class="dot on"></span>Overall Performance</div>
         <div class="cport">:3005</div>
         <span class="arr">→</span>
       </a>
-      <a class="card internal" href="http://192.168.68.50:8001/" target="_blank">
-        <div class="cname"><span class="dot on"></span>Ride entry</div>
-        <div class="cport">:8001</div>
+      <a class="card internal" href="#" data-path=":3005/d/addhn89/weekly-performance?orgId=1&from=now-6h&to=now&timezone=browser" target="_blank">
+        <div class="cname"><span class="dot on"></span>Weekly Performance</div>
+        <div class="cport">:3005</div>
+        <span class="arr">→</span>
+      </a>
+      <a class="card internal" href="#" data-path=":3005/d/adcfzhd/zwift-7c-route-badges-and-climb-portal-22-05-2026?orgId=1&from=now-6h&to=now&timezone=browser" target="_blank">
+        <div class="cname"><span class="dot on"></span>Zwift Routes</div>
+        <div class="cport">:3005</div>
+        <span class="arr">→</span>
+      </a>
+      <a class="card internal" href="#" data-path=":8095/en/dashboard" target="_blank">
+        <div class="cname"><span class="dot on"></span>WGER</div>
+        <div class="cport">:8095</div>
         <span class="arr">→</span>
       </a>
       <a class="card ext-style external" href="http://app.strava.com/dashboard" target="_blank">
@@ -110,37 +118,10 @@
         <div class="cname"><span class="dot ext"></span>Garmin</div>
         <span class="arr">→</span>
       </a>
-      <a class="card ext-style external" href="https://zwiftinsider.com/schedule/" target="_blank">
-        <div class="cname"><span class="dot ext"></span>Zwift World Schedule</div>
-        <span class="arr">→</span>
-      </a>
-      <a class="card ext-style external" href="https://zwiftinsider.com/climb-portal-schedule/" target="_blank">
-        <div class="cname"><span class="dot ext"></span>Climb Portal Schedule</div>
-        <span class="arr">→</span>
-      </a>
       <a class="card ext-style external" href="https://zwiftpower.com/events.php" target="_blank">
         <div class="cname"><span class="dot ext"></span>Zwift Power</div>
         <span class="arr">→</span>
       </a>
-      <a class="card ext-style external" href="https://www.fiets.nl/forum/" target="_blank">
-        <div class="cname"><span class="dot ext"></span>Fiets.nl forum</div>
-        <span class="arr">→</span>
-      </a>
-    </div>
-  </div>
-
-  <!-- FINANCE -->
-  <div class="section">
-    <div class="section-label">finance</div>
-    <div class="grid">
-
-
-      <a class="card internal" href="http://192.168.68.50:8001/salary" target="_blank">
-        <div class="cname"><span class="dot on"></span>Salary log</div>
-        <div class="cport">:8001/salary</div>
-        <span class="arr">→</span>
-      </a>
-
     </div>
   </div>
 
@@ -152,17 +133,17 @@
         <div class="cname"><span class="dot ext"></span>Ugreen UI</div>
         <span class="arr">→</span>
       </a>
-      <a class="card internal" href="http://192.168.68.50:5000/" target="_blank">
+      <a class="card internal" href="#" data-path=":5000/" target="_blank">
         <div class="cname"><span class="dot on"></span>MP3 downloader</div>
         <div class="cport">:5000</div>
         <span class="arr">→</span>
       </a>
-      <a class="card internal" href="http://192.168.68.50:32400" target="_blank">
+      <a class="card internal" href="#" data-path=":32400" target="_blank">
         <div class="cname"><span class="dot on"></span>Plex</div>
         <div class="cport">:32400</div>
         <span class="arr">→</span>
       </a>
-      <a class="card internal" href="http://192.168.68.50:9091" target="_blank">
+      <a class="card internal" href="#" data-path=":9091" target="_blank">
         <div class="cname"><span class="dot on"></span>Transmission</div>
         <div class="cport">:9091</div>
         <span class="arr">→</span>
@@ -170,18 +151,16 @@
     </div>
   </div>
 
-
-
   <!-- TOOLS -->
   <div class="section">
     <div class="section-label">tools</div>
     <div class="grid">
-      <a class="card internal" href="http://192.168.68.50:3001" target="_blank">
+      <a class="card internal" href="#" data-path=":3001" target="_blank">
         <div class="cname"><span class="dot on"></span>Uptime Kuma</div>
         <div class="cport">:3001</div>
         <span class="arr">→</span>
       </a>
-      <a class="card internal" href="http://192.168.68.50:9000" target="_blank">
+      <a class="card internal" href="#" data-path=":9000" target="_blank">
         <div class="cname"><span class="dot on"></span>Portainer</div>
         <div class="cport">:9000</div>
         <span class="arr">→</span>
@@ -199,13 +178,41 @@
 
 </div>
 <script>
+  const LOCAL_IP  = '192.168.68.50';
+  const REMOTE_IP = '100.95.85.56';
+
+  function applyIP(ip) {
+    document.querySelectorAll('a[data-path]').forEach(el => {
+      const path = el.getAttribute('data-path');
+      el.href = 'http://' + ip + path;
+    });
+    const badge = document.getElementById('mode-badge');
+    if (ip === LOCAL_IP) {
+      badge.textContent = '⌂ local';
+      badge.className = 'mode-badge local';
+    } else {
+      badge.textContent = '⇌ remote';
+      badge.className = 'mode-badge remote';
+    }
+  }
+
+  async function detectMode() {
+    try {
+      await fetch('http://' + LOCAL_IP + ':9000', { mode: 'no-cors', signal: AbortSignal.timeout(1500) });
+      applyIP(LOCAL_IP);
+    } catch (e) {
+      applyIP(REMOTE_IP);
+    }
+  }
+
   function tick() {
     const now = new Date();
-    document.getElementById('clock').textContent = now.toLocaleTimeString('nl-NL', {hour:'2-digit',minute:'2-digit',second:'2-digit'});
-    document.getElementById('datestr').textContent = now.toLocaleDateString('nl-NL', {weekday:'short',day:'2-digit',month:'short',year:'numeric'});
-
+    document.getElementById('clock').textContent = now.toLocaleTimeString('nl-NL', {hour:'2-digit', minute:'2-digit', second:'2-digit'});
   }
-  tick(); setInterval(tick, 1000);
+
+  detectMode();
+  tick();
+  setInterval(tick, 1000);
 </script>
 </body>
 </html>
