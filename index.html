@@ -14,10 +14,10 @@
   .nas-title { font-size: 22px; font-weight: 600; color: #e8f0f4; letter-spacing: -0.02em; }
   .header-right { display: flex; align-items: center; gap: 14px; }
   .clock { font-size: 14px; color: #6a9eb8; font-weight: 500; }
-  .mode-badge { font-size: 10px; padding: 2px 8px; border-radius: 3px; transition: all 0.3s; }
-  .mode-badge.local  { background: #1a3a28; color: #3a8a6e; border: 1px solid #2a5a38; }
-  .mode-badge.remote { background: #1a2a40; color: #4a7ab8; border: 1px solid #2a4a78; }
-  .mode-badge.detecting { background: #1a2a1a; color: #3a5040; border: 1px solid #2a3a28; }
+  .mode-btn { font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 3px 10px; border-radius: 3px; cursor: pointer; transition: all 0.2s; background: #1a3a28; color: #3a8a6e; border: 1px solid #2a5a38; }
+  .mode-btn:hover { background: #1e4a32; }
+  .mode-btn.remote { background: #1a2a40; color: #4a7ab8; border-color: #2a4a78; }
+  .mode-btn.remote:hover { background: #1e3450; }
 
   .section { margin-bottom: 1.75rem; }
   .section-label { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #3a5060; margin-bottom: 0.6rem; display: flex; align-items: center; gap: 8px; }
@@ -66,7 +66,7 @@
       <div class="nas-title">UGREEN NAS | jsprhrmsn</div>
     </div>
     <div class="header-right">
-      <span class="mode-badge detecting" id="mode-badge">detecting...</span>
+      <button class="mode-btn" id="mode-btn" onclick="toggleMode()">⌂ home</button>
       <div class="clock" id="clock">--:--:--</div>
     </div>
   </div>
@@ -203,24 +203,18 @@
       const path = el.getAttribute('data-path');
       el.href = 'http://' + ip + path;
     });
-    const badge = document.getElementById('mode-badge');
+    const btn = document.getElementById('mode-btn');
     if (ip === LOCAL_IP) {
-      badge.textContent = '⌂ local';
-      badge.className = 'mode-badge local';
+      btn.textContent = '⌂ home';
+      btn.className = 'mode-btn';
     } else {
-      badge.textContent = '⇌ remote';
-      badge.className = 'mode-badge remote';
+      btn.textContent = '⇌ remote';
+      btn.className = 'mode-btn remote';
     }
   }
 
-  async function detectMode() {
-    try {
-      const res = await fetch('https://api.ipify.org?format=json', { signal: AbortSignal.timeout(3000) });
-      const { ip } = await res.json();
-      applyIP(ip === '165.225.92.155' ? LOCAL_IP : REMOTE_IP);
-    } catch(e) {
-      applyIP(REMOTE_IP);
-    }
+  function toggleMode() {
+    applyIP(currentIP === LOCAL_IP ? REMOTE_IP : LOCAL_IP);
   }
 
   async function loadWger(ip) {
@@ -262,7 +256,7 @@
     document.getElementById('clock').textContent = now.toLocaleTimeString('nl-NL', {hour:'2-digit', minute:'2-digit', second:'2-digit'});
   }
 
-  detectMode();
+  applyIP(REMOTE_IP);
   tick();
   setInterval(tick, 1000);
 </script>
