@@ -213,13 +213,9 @@
     }
   }
 
-  async function detectMode() {
-    try {
-      await fetch('http://' + LOCAL_IP + ':9000', { mode: 'no-cors', signal: AbortSignal.timeout(1500) });
-      applyIP(LOCAL_IP);
-    } catch (e) {
-      applyIP(REMOTE_IP);
-    }
+  function detectMode() {
+    const isLocal = window.location.hostname === LOCAL_IP;
+    applyIP(isLocal ? LOCAL_IP : REMOTE_IP);
   }
 
   async function loadWger(ip) {
@@ -261,13 +257,9 @@
     document.getElementById('clock').textContent = now.toLocaleTimeString('nl-NL', {hour:'2-digit', minute:'2-digit', second:'2-digit'});
   }
 
-  async function init() {
-    const ip = await detectMode();
-    tick();
-    setInterval(tick, 1000);
-    loadWger(currentIP);
-  }
-  init();
+  detectMode();
+  tick();
+  setInterval(tick, 1000);
 </script>
 </body>
 </html>
