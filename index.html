@@ -34,8 +34,9 @@
   .dot.on  { background: #2a8a50; border: 1px solid #3ab868; }
   .dot.ext { background: #1e3050; border: 1px solid #2a5890; }
 
+  .card-icon { width: 24px; height: 24px; object-fit: contain; margin-right: 8px; vertical-align: middle; flex-shrink: 0; border-radius: 3px; }
   .cname { font-size: 12px; font-weight: 500; color: #c0d4e0; display: flex; align-items: center; }
-  .cport { font-size: 10px; color: #2a5a70; font-weight: 300; padding-left: 17px; margin-top: 4px; }
+  .cport { font-size: 10px; color: #2a5a70; font-weight: 300; padding-left: 32px; margin-top: 4px; }
 
   .card.hi { border-color: #1e3040; background: #0e1a22; }
   .card.hi:hover { border-color: #2a5a78; }
@@ -48,14 +49,7 @@
   @media (max-width: 700px) { .grid { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 420px) { .grid { grid-template-columns: 1fr; } }
 
-  /* WGER card extras */
-  .wger-weight { font-size: 13px; color: #6a9eb8; font-weight: 500; padding-left: 17px; margin-top: 4px; }
-  .wger-bar-wrap { margin-top: 8px; padding-left: 17px; padding-right: 4px; }
-  .wger-bar-track { height: 3px; background: #1a2a30; border-radius: 2px; overflow: hidden; }
-  .wger-bar-fill { height: 100%; background: #2a8a50; border-radius: 2px; width: 0%; transition: width 0.6s ease; }
-  .wger-bar-fill.warn { background: #8a6a2a; }
-  .wger-bar-fill.over { background: #8a2a2a; }
-  .wger-kcal { font-size: 10px; color: #2a5060; margin-top: 3px; }
+
 </style>
 </head>
 <body>
@@ -76,15 +70,15 @@
     <div class="section-label">personal</div>
     <div class="grid">
       <a class="card hi ext-style external" href="https://mail.proton.me/u/16/inbox" target="_blank">
-        <div class="cname"><span class="dot ext"></span>Proton Mail</div>
+        <div class="cname"><img class="card-icon" src="https://raw.githubusercontent.com/jsprhrmsn/home/refs/heads/main/protonmail.png" alt="">Proton Mail</div>
         <span class="arr">→</span>
       </a>
       <a class="card ext-style external" href="https://calendar.proton.me/u/16/" target="_blank">
-        <div class="cname"><span class="dot ext"></span>Proton Calendar</div>
+        <div class="cname"><img class="card-icon" src="https://raw.githubusercontent.com/jsprhrmsn/home/refs/heads/main/protoncalendar.png" alt="">Proton Calendar</div>
         <span class="arr">→</span>
       </a>
       <a class="card ext-style external" href="https://drive.proton.me/u/16/" target="_blank">
-        <div class="cname"><span class="dot ext"></span>Proton Drive</div>
+        <div class="cname"><img class="card-icon" src="https://raw.githubusercontent.com/jsprhrmsn/home/refs/heads/main/protondrive.png" alt="">Proton Drive</div>
         <span class="arr">→</span>
       </a>
     </div>
@@ -95,46 +89,40 @@
     <div class="section-label">cycling</div>
     <div class="grid">
       <a class="card hi internal" href="#" data-path=":8001/" target="_blank">
-        <div class="cname"><span class="dot on"></span>Ride entry</div>
+        <div class="cname"><img class="card-icon" src="https://raw.githubusercontent.com/jsprhrmsn/home/refs/heads/main/garmin.png" alt="">Ride entry</div>
         <div class="cport">:8001</div>
         <span class="arr">→</span>
       </a>
       <a class="card internal" href="#" data-path=":3005/d/addnwzm/22b4715?orgId=1&from=2011-10-29T22:00:00.000Z&to=2026-02-12T23:00:00.000Z&timezone=browser" target="_blank">
-        <div class="cname"><span class="dot on"></span>Overall Performance</div>
+        <div class="cname"><img class="card-icon" src="https://raw.githubusercontent.com/jsprhrmsn/home/refs/heads/main/grafana.png" alt="">Overall Performance</div>
         <div class="cport">:3005</div>
         <span class="arr">→</span>
       </a>
       <a class="card internal" href="#" data-path=":3005/d/addhn89/weekly-performance?orgId=1&from=now-6h&to=now&timezone=browser" target="_blank">
-        <div class="cname"><span class="dot on"></span>Weekly Performance</div>
+        <div class="cname"><img class="card-icon" src="https://raw.githubusercontent.com/jsprhrmsn/home/refs/heads/main/grafana.png" alt="">Weekly Performance</div>
         <div class="cport">:3005</div>
         <span class="arr">→</span>
       </a>
       <a class="card internal" href="#" data-path=":3005/d/adcfzhd/zwift-7c-route-badges-and-climb-portal-22-05-2026?orgId=1&from=now-6h&to=now&timezone=browser" target="_blank">
-        <div class="cname"><span class="dot on"></span>Zwift Routes</div>
+        <div class="cname"><img class="card-icon" src="https://raw.githubusercontent.com/jsprhrmsn/home/refs/heads/main/grafana.png" alt="">Zwift Routes</div>
         <div class="cport">:3005</div>
         <span class="arr">→</span>
       </a>
-      <a class="card internal" href="#" data-path=":8095/en/dashboard" target="_blank" id="wger-card">
-        <div class="cname"><span class="dot on"></span>WGER</div>
-        <div class="wger-weight" id="wger-weight">— kg</div>
-        <div class="wger-bar-wrap">
-          <div class="wger-bar-track">
-            <div class="wger-bar-fill" id="wger-bar"></div>
-          </div>
-          <div class="wger-kcal" id="wger-kcal">— / 2000 kcal</div>
-        </div>
+      <a class="card internal" href="#" data-path=":8095/en/dashboard" target="_blank">
+        <div class="cname"><img class="card-icon" src="https://raw.githubusercontent.com/jsprhrmsn/home/refs/heads/main/wger.png" alt="">WGER</div>
+        <div class="cport">:8095</div>
         <span class="arr">→</span>
       </a>
       <a class="card ext-style external" href="http://app.strava.com/dashboard" target="_blank">
-        <div class="cname"><span class="dot ext"></span>Strava</div>
+        <div class="cname"><img class="card-icon" src="https://raw.githubusercontent.com/jsprhrmsn/home/refs/heads/main/strava.png" alt="">Strava</div>
         <span class="arr">→</span>
       </a>
       <a class="card ext-style external" href="https://connect.garmin.com/app/home" target="_blank">
-        <div class="cname"><span class="dot ext"></span>Garmin</div>
+        <div class="cname"><img class="card-icon" src="https://raw.githubusercontent.com/jsprhrmsn/home/refs/heads/main/garmin.png" alt="">Garmin</div>
         <span class="arr">→</span>
       </a>
       <a class="card ext-style external" href="https://zwiftpower.com/events.php" target="_blank">
-        <div class="cname"><span class="dot ext"></span>Zwift Power</div>
+        <div class="cname"><img class="card-icon" src="https://raw.githubusercontent.com/jsprhrmsn/home/refs/heads/main/zwiftpower.png" alt="">Zwift Power</div>
         <span class="arr">→</span>
       </a>
     </div>
@@ -145,7 +133,7 @@
     <div class="section-label">media</div>
     <div class="grid">
       <a class="card hi ext-style external" href="https://jsprhrmsn1978.eur3.ug.link/desktop/?os=ugospro#/" target="_blank">
-        <div class="cname"><span class="dot ext"></span>Ugreen UI</div>
+        <div class="cname"><img class="card-icon" src="https://raw.githubusercontent.com/jsprhrmsn/home/refs/heads/main/ugreen.png" alt="">Ugreen UI</div>
         <span class="arr">→</span>
       </a>
       <a class="card internal" href="#" data-path=":5000/" target="_blank">
@@ -154,12 +142,12 @@
         <span class="arr">→</span>
       </a>
       <a class="card internal" href="#" data-path=":32400" target="_blank">
-        <div class="cname"><span class="dot on"></span>Plex</div>
+        <div class="cname"><img class="card-icon" src="https://raw.githubusercontent.com/jsprhrmsn/home/refs/heads/main/plex.png" alt="">Plex</div>
         <div class="cport">:32400</div>
         <span class="arr">→</span>
       </a>
       <a class="card internal" href="#" data-path=":9091" target="_blank">
-        <div class="cname"><span class="dot on"></span>Transmission</div>
+        <div class="cname"><img class="card-icon" src="https://raw.githubusercontent.com/jsprhrmsn/home/refs/heads/main/transmission.png" alt="">Transmission</div>
         <div class="cport">:9091</div>
         <span class="arr">→</span>
       </a>
@@ -171,21 +159,21 @@
     <div class="section-label">tools</div>
     <div class="grid">
       <a class="card internal" href="#" data-path=":3001" target="_blank">
-        <div class="cname"><span class="dot on"></span>Uptime Kuma</div>
+        <div class="cname"><img class="card-icon" src="https://raw.githubusercontent.com/jsprhrmsn/home/refs/heads/main/uptimekuma.png" alt="">Uptime Kuma</div>
         <div class="cport">:3001</div>
         <span class="arr">→</span>
       </a>
       <a class="card internal" href="#" data-path=":9000" target="_blank">
-        <div class="cname"><span class="dot on"></span>Portainer</div>
+        <div class="cname"><img class="card-icon" src="https://raw.githubusercontent.com/jsprhrmsn/home/refs/heads/main/portainer.png" alt="">Portainer</div>
         <div class="cport">:9000</div>
         <span class="arr">→</span>
       </a>
       <a class="card ext-style external" href="https://192.168.0.1/login.html" target="_blank">
-        <div class="cname"><span class="dot ext"></span>Router Lowi</div>
+        <div class="cname"><img class="card-icon" src="https://raw.githubusercontent.com/jsprhrmsn/home/refs/heads/main/lowi.png" alt="">Router Lowi</div>
         <span class="arr">→</span>
       </a>
       <a class="card ext-style external" href="https://login.tailscale.com/login?next_url=%2Fadmin%2Fmachines" target="_blank">
-        <div class="cname"><span class="dot ext"></span>Tailscale</div>
+        <div class="cname"><img class="card-icon" src="https://raw.githubusercontent.com/jsprhrmsn/home/refs/heads/main/tailscale.png" alt="">Tailscale</div>
         <span class="arr">→</span>
       </a>
     </div>
@@ -217,39 +205,6 @@
     applyIP(currentIP === LOCAL_IP ? REMOTE_IP : LOCAL_IP);
   }
 
-  async function loadWger(ip) {
-    try {
-      const base = 'http://' + ip + ':8095';
-
-      // Weight
-      const wRes = await fetch(base + '/api/v2/weightentry/?format=json&limit=1&ordering=-date', { credentials: 'include' });
-      if (wRes.ok) {
-        const wData = await wRes.json();
-        if (wData.results && wData.results.length > 0) {
-          const kg = parseFloat(wData.results[0].weight).toFixed(1);
-          document.getElementById('wger-weight').textContent = kg + ' kg';
-        }
-      }
-
-      // Calories today
-      const today = new Date().toISOString().split('T')[0];
-      const cRes = await fetch(base + '/api/v2/nutritiondiary/?format=json&limit=100', { credentials: 'include' });
-      if (cRes.ok) {
-        const cData = await cRes.json();
-        const todayEntries = cData.results.filter(e => e.datetime && e.datetime.startsWith(today));
-        const totalKcal = todayEntries.reduce((sum, e) => sum + (parseFloat(e.energy) || 0), 0);
-        const goal = 2000;
-        const pct = Math.min((totalKcal / goal) * 100, 100);
-        const bar = document.getElementById('wger-bar');
-        bar.style.width = pct + '%';
-        if (pct >= 100) bar.className = 'wger-bar-fill over';
-        else if (pct >= 85) bar.className = 'wger-bar-fill warn';
-        document.getElementById('wger-kcal').textContent = Math.round(totalKcal) + ' / ' + goal + ' kcal';
-      }
-    } catch(e) {
-      // silently fail — WGER not reachable
-    }
-  }
 
   function tick() {
     const now = new Date();
