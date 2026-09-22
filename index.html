@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UGREEN NAS — Jasper</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0a0c0e; color: #c8d4dc; font-family: 'JetBrains Mono', monospace; min-height: 100vh; }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem 3rem; }
+
+  .header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 1.5rem; padding-bottom: 1.25rem; border-bottom: 1px solid #1e2a32; }
+  .nas-title { font-size: 22px; font-weight: 600; color: #e8f0f4; letter-spacing: -0.02em; }
+  .header-right { display: flex; align-items: center; gap: 14px; }
+  .clock { font-size: 14px; color: #6a9eb8; font-weight: 500; }
+  .mode-btn { font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 3px 10px; border-radius: 3px; cursor: pointer; transition: all 0.2s; background: #1a3a28; color: #3a8a6e; border: 1px solid #2a5a38; }
+  .mode-btn:hover { background: #1e4a32; }
+  .mode-btn.remote { background: #1a2a40; color: #4a7ab8; border-color: #2a4a78; }
+  .mode-btn.remote:hover { background: #1e3450; }
+
+  .section { margin-bottom: 1.75rem; }
+  .section-label { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #3a5060; margin-bottom: 0.6rem; display: flex; align-items: center; gap: 8px; }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: #1a2530; }
+
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+
+  .card { background: #0d1318; border: 1px solid #1a2530; border-radius: 4px; padding: 11px 13px; text-decoration: none; display: block; transition: border-color 0.15s, background 0.15s; cursor: pointer; position: relative; }
+  .card:hover { border-color: #2a4a5a; background: #101820; }
+  .card:hover .arr { opacity: 1; transform: translateX(0); }
+  .arr { position: absolute; top: 11px; right: 11px; font-size: 11px; color: #3a8a6e; opacity: 0; transform: translateX(-4px); transition: all 0.15s; }
+
+  .dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; margin-right: 7px; vertical-align: middle; flex-shrink: 0; }
+  .dot.on  { background: #2a8a50; border: 1px solid #3ab868; }
+  .dot.ext { background: #1e3050; border: 1px solid #2a5890; }
+
+  .card-icon { width: 24px; height: 24px; object-fit: contain; margin-right: 8px; vertical-align: middle; flex-shrink: 0; border-radius: 3px; }
+  .cname { font-size: 12px; font-weight: 500; color: #c0d4e0; display: flex; align-items: center; }
+  .cport { font-size: 10px; color: #2a5a70; font-weight: 300; padding-left: 32px; margin-top: 4px; }
+
+  .card.hi { border-color: #1e3040; background: #0e1a22; }
+  .card.hi:hover { border-color: #2a5a78; }
+  .card.ext-style:hover .cname { color: #6ab8e0; }
+  .card.internal { border-color: #1a3a28; }
+  .card.internal:hover { border-color: #2a6a48; }
+  .card.external { border-color: #1a2a40; }
+  .card.external:hover { border-color: #2a4a78; }
+
+  @media (max-width: 700px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 420px) { .grid { grid-template-columns: 1fr; } }
+
+
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <div>
+      <div class="nas-title">UGREEN NAS | jsprhrmsn</div>
+    </div>
+    <div class="header-right">
+      <button class="mode-btn" id="mode-btn" onclick="toggleMode()">⌂ home</button>
+      <div class="clock" id="clock">--:--:--</div>
+    </div>
+  </div>
+
+  <!-- PERSONAL -->
+  <div class="section">
+    <div class="section-label">personal</div>
+    <div class="grid">
+      <a class="card hi ext-style external" href="https://mail.proton.me/u/16/inbox" target="_blank">
+        <div class="cname"><img class="card-icon" src="https://raw.githubusercontent.com/jsprhrmsn/home/refs/heads/main/protonmail.png" alt="">Proton Mail</div>
+        <span class="arr">→</span>
+      </a>
+      <a class="card ext-style external" href="https://calendar.proton.me/u/16/" target="_blank">
+        <div class="cname"><img class="card-icon" src="https://raw.githubusercontent.com/jsprhrmsn/home/refs/heads/main/protoncalendar.png" alt="">Proton Calendar</div>
+        <span class="arr">→</span>
+      </a>
+      <a class="card ext-style external" href="https://drive.proton.me/u/16/" target="_blank">
+        <div class="cname"><img class="card-icon" src="https://raw.githubusercontent.com/jsprhrmsn/home/refs/heads/main/protondrive.png" alt="">Proton Drive</div>
+        <span class="arr">→</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- CYCLING -->
+  <div class="section">
+    <div class="section-label">cycling</div>
+    <div class="grid">
+      <a class="card hi internal" href="#" data-path=":8001/" target="_blank">
+        <div class="cname"><img class="card-icon" src="https://raw.githubusercontent.com/jsprhrmsn/home/refs/heads/main/garmin.png" alt="">Ride entry</div>
+        <div class="cport">:8001</div>
+        <span class="arr">→</span>
+      </a>
+      <a class="card internal" href="#" data-path=":3005/d/addnwzm/22b4715?orgId=1&from=2011-10-29T22:00:00.000Z&to=2026-02-12T23:00:00.000Z&timezone=browser" target="_blank">
+        <div class="cname"><img class="card-icon" src="https://raw.githubusercontent.com/jsprhrmsn/home/refs/heads/main/grafana.png" alt="">Overall Performance</div>
+        <div class="cport">:3005</div>
+        <span class="arr">→</span>
+      </a>
+      <a class="card internal" href="#" data-path=":3005/d/addhn89/weekly-performance?orgId=1&from=now-6h&to=now&timezone=browser" target="_blank">
+        <div class="cname"><img class="card-icon" src="https://raw.githubusercontent.com/jsprhrmsn/home/refs/heads/main/grafana.png" alt="">Weekly Performance</div>
+        <div class="cport">:3005</div>
+        <span class="arr">→</span>
+      </a>
+      <a class="card internal" href="#" data-path=":3005/d/adcfzhd/zwift-7c-route-badges-and-climb-portal-22-05-2026?orgId=1&from=now-6h&to=now&timezone=browser" target="_blank">
+        <div class="cname"><img class="card-icon" src="https://raw.githubusercontent.com/jsprhrmsn/home/refs/heads/main/grafana.png" alt="">Zwift Routes</div>
+        <div class="cport">:3005</div>
+        <span class="arr">→</span>
+      </a>
+      <a class="card internal" href="#" data-path=":8095/en/dashboard" target="_blank">
+        <div class="cname"><img class="card-icon" src="https://raw.githubusercontent.com/jsprhrmsn/home/refs/heads/main/wger.png" alt="">WGER</div>
+        <div class="cport">:8095</div>
+        <span class="arr">→</span>
+      </a>
+      <a class="card ext-style external" href="http://app.strava.com/dashboard" target="_blank">
+        <div class="cname"><img class="card-icon" src="https://raw.githubusercontent.com/jsprhrmsn/home/refs/heads/main/strava.png" alt="">Strava</div>
+        <span class="arr">→</span>
+      </a>
+      <a class="card ext-style external" href="https://connect.garmin.com/app/home" target="_blank">
+        <div class="cname"><img class="card-icon" src="https://raw.githubusercontent.com/jsprhrmsn/home/refs/heads/main/garmin.png" alt="">Garmin</div>
+        <span class="arr">→</span>
+      </a>
+      <a class="card ext-style external" href="https://zwiftpower.com/events.php" target="_blank">
+        <div class="cname"><img class="card-icon" src="https://raw.githubusercontent.com/jsprhrmsn/home/refs/heads/main/zwiftpower.png" alt="">Zwift Power</div>
+        <span class="arr">→</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- MEDIA -->
+  <div class="section">
+    <div class="section-label">media</div>
+    <div class="grid">
+      <a class="card hi ext-style external" href="https://jsprhrmsn1978.eur3.ug.link/desktop/?os=ugospro#/" target="_blank">
+        <div class="cname"><img class="card-icon" src="https://raw.githubusercontent.com/jsprhrmsn/home/refs/heads/main/ugreen.png" alt="">Ugreen UI</div>
+        <span class="arr">→</span>
+      </a>
+      <a class="card internal" href="#" data-path=":5000/" target="_blank">
+        <div class="cname"><span class="dot on"></span>MP3 downloader</div>
+        <div class="cport">:5000</div>
+        <span class="arr">→</span>
+      </a>
+      <a class="card internal" href="#" data-path=":32400" target="_blank">
+        <div class="cname"><img class="card-icon" src="https://raw.githubusercontent.com/jsprhrmsn/home/refs/heads/main/plex.png" alt="">Plex</div>
+        <div class="cport">:32400</div>
+        <span class="arr">→</span>
+      </a>
+      <a class="card internal" href="#" data-path=":9091" target="_blank">
+        <div class="cname"><img class="card-icon" src="https://raw.githubusercontent.com/jsprhrmsn/home/refs/heads/main/transmission.png" alt="">Transmission</div>
+        <div class="cport">:9091</div>
+        <span class="arr">→</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- TOOLS -->
+  <div class="section">
+    <div class="section-label">tools</div>
+    <div class="grid">
+      <a class="card internal" href="#" data-path=":3001" target="_blank">
+        <div class="cname"><img class="card-icon" src="https://raw.githubusercontent.com/jsprhrmsn/home/refs/heads/main/uptimekuma.png" alt="">Uptime Kuma</div>
+        <div class="cport">:3001</div>
+        <span class="arr">→</span>
+      </a>
+      <a class="card internal" href="#" data-path=":9000" target="_blank">
+        <div class="cname"><img class="card-icon" src="https://raw.githubusercontent.com/jsprhrmsn/home/refs/heads/main/portainer.png" alt="">Portainer</div>
+        <div class="cport">:9000</div>
+        <span class="arr">→</span>
+      </a>
+      <a class="card ext-style external" href="https://192.168.0.1/login.html" target="_blank">
+        <div class="cname"><img class="card-icon" src="https://raw.githubusercontent.com/jsprhrmsn/home/refs/heads/main/lowi.png" alt="">Router Lowi</div>
+        <span class="arr">→</span>
+      </a>
+      <a class="card ext-style external" href="https://login.tailscale.com/login?next_url=%2Fadmin%2Fmachines" target="_blank">
+        <div class="cname"><img class="card-icon" src="https://raw.githubusercontent.com/jsprhrmsn/home/refs/heads/main/tailscale.png" alt="">Tailscale</div>
+        <span class="arr">→</span>
+      </a>
+    </div>
+  </div>
+
+</div>
+<script>
+  const LOCAL_IP  = '192.168.68.50';
+  const REMOTE_IP = '100.95.85.56';
+  let currentIP = LOCAL_IP;
+
+  function applyIP(ip) {
+    currentIP = ip;
+    document.querySelectorAll('a[data-path]').forEach(el => {
+      const path = el.getAttribute('data-path');
+      el.href = 'http://' + ip + path;
+    });
+    const btn = document.getElementById('mode-btn');
+    if (ip === LOCAL_IP) {
+      btn.textContent = '⌂ home';
+      btn.className = 'mode-btn';
+    } else {
+      btn.textContent = '⇌ remote';
+      btn.className = 'mode-btn remote';
+    }
+  }
+
+  function toggleMode() {
+    applyIP(currentIP === LOCAL_IP ? REMOTE_IP : LOCAL_IP);
+  }
+
+
+  function tick() {
+    const now = new Date();
+    document.getElementById('clock').textContent = now.toLocaleTimeString('nl-NL', {hour:'2-digit', minute:'2-digit', second:'2-digit'});
+  }
+
+  applyIP(REMOTE_IP);
+  tick();
+  setInterval(tick, 1000);
+</script>
+</body>
+</html>
