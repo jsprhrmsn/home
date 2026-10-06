@@ -212,7 +212,24 @@
     document.getElementById('clock').textContent = now.toLocaleTimeString('nl-NL', {hour:'2-digit', minute:'2-digit', second:'2-digit'});
   }
 
-  applyIP(REMOTE_IP);
+  // Auto-detect: ping Uptime Kuma favicon via img tag (no CORS issues)
+  function detectNetwork() {
+    return new Promise(resolve => {
+      const img = new Image();
+      const timer = setTimeout(() => {
+        img.src = '';
+        resolve('remote');
+      }, 2000);
+      img.onload = () => { clearTimeout(timer); resolve('local'); };
+      img.onerror = () => { clearTimeout(timer); resolve('remote'); };
+      img.src = 'http://192.168.68.50:3001/favicon.ico?_=' + Date.now();
+    });
+  }
+
+  detectNetwork().then(result => {
+    applyIP(result === 'local' ? LOCAL_IP : REMOTE_IP);
+  });
+
   tick();
   setInterval(tick, 1000);
 </script>
